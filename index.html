@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de porcentaje de descuento: precio final y ahorro</title>
+<meta name="description" content="Calcula el porcentaje de descuento, el precio final y cuánto ahorras en segundos. Calculadora gratis, sin registro y con fórmulas explicadas paso a paso.">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://www.tusitio.com/calculadora-porcentaje-descuento">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Calculadora de porcentaje de descuento">
+<meta property="og:description" content="Obtén el precio final, el ahorro o el porcentaje de descuento al instante.">
+<meta property="og:url" content="https://www.tusitio.com/calculadora-porcentaje-descuento">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%25%3C/text%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calculadora de porcentaje de descuento",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Todos",
+      "inLanguage": "es",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Calcula el precio final, el ahorro y el porcentaje de descuento de cualquier producto."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo se calcula un porcentaje de descuento?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Multiplica el precio original por el porcentaje y divide entre 100 para obtener el ahorro. Luego réstalo al precio original: precio final = precio × (1 − descuento / 100)." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo saber qué porcentaje de descuento me hicieron?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Resta el precio final al precio original, divide el resultado entre el precio original y multiplícalo por 100." }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se calculan dos descuentos seguidos?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No se suman. El segundo descuento se aplica sobre el precio ya rebajado. Dos descuentos del 20 % equivalen a un 36 % total, no a un 40 %." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+:root{
+  --bg:#f6f7f6; --surface:#ffffff; --text:#14201e; --muted:#5b6866;
+  --line:#dde3e1; --accent:#0f766e; --accent-d:#0b5a54; --accent-soft:#e3f2f0;
+  --err:#b42318;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1514; --surface:#151e1d; --text:#e8efed; --muted:#9aa9a6;
+    --line:#26332f; --accent:#2dd4bf; --accent-d:#5eead4; --accent-soft:#12302c; --err:#f97066;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font:16px/1.65 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px; margin:0 auto; padding:40px 20px 64px}
+header{margin-bottom:28px}
+h1{font-size:clamp(1.7rem,4.5vw,2.3rem); line-height:1.2; margin:0 0 10px; letter-spacing:-.02em}
+header p{margin:0; color:var(--muted); max-width:56ch}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:24px}
+.tabs{display:flex; gap:6px; background:var(--bg); padding:4px; border-radius:10px; margin-bottom:22px; border:1px solid var(--line)}
+.tab{
+  flex:1; border:0; background:transparent; color:var(--muted); font:inherit; font-size:.92rem; font-weight:500;
+  padding:9px 8px; border-radius:7px; cursor:pointer;
+}
+.tab[aria-selected="true"]{background:var(--surface); color:var(--text); box-shadow:0 0 0 1px var(--line)}
+.grid{display:grid; gap:16px; grid-template-columns:1fr 1fr}
+.grid .full{grid-column:1/-1}
+label{display:block; font-size:.88rem; font-weight:500; margin-bottom:6px}
+.field{position:relative}
+input{
+  width:100%; font:inherit; font-size:1.05rem; color:var(--text); background:var(--surface);
+  border:1px solid var(--line); border-radius:9px; padding:11px 40px 11px 12px;
+}
+input::placeholder{color:var(--muted); opacity:.6}
+.suffix{position:absolute; right:13px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+input:focus{border-color:var(--accent)}
+.actions{display:flex; gap:10px; margin-top:20px}
+button.main{
+  flex:1; font:inherit; font-weight:600; background:var(--accent); color:#fff; border:0;
+  border-radius:9px; padding:12px 18px; cursor:pointer;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.main{color:#06201c}}
+button.main:hover{background:var(--accent-d)}
+button.ghost{
+  font:inherit; background:transparent; color:var(--muted); border:1px solid var(--line);
+  border-radius:9px; padding:12px 18px; cursor:pointer;
+}
+button.ghost:hover{color:var(--text); border-color:var(--muted)}
+.error{color:var(--err); font-size:.9rem; margin:14px 0 0; min-height:1.2em}
+
+.result{margin-top:20px; background:var(--accent-soft); border-radius:12px; padding:20px; display:none}
+.result.show{display:block}
+.result .big{font-size:clamp(2rem,7vw,2.8rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; color:var(--accent-d)}
+.result .big small{display:block; font-size:.85rem; font-weight:500; color:var(--muted); letter-spacing:0; margin-bottom:4px}
+dl{display:grid; grid-template-columns:1fr auto; gap:8px 16px; margin:16px 0 0; padding-top:14px; border-top:1px solid var(--line); font-size:.95rem}
+dt{color:var(--muted)} dd{margin:0; font-weight:600; text-align:right}
+
+main section{margin-top:44px}
+h2{font-size:1.3rem; line-height:1.3; margin:0 0 12px; letter-spacing:-.01em}
+h3{font-size:1.02rem; margin:22px 0 6px}
+p{margin:0 0 14px}
+.formula{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:8px; padding:12px 16px; margin:0 0 12px; font-size:.96rem}
+table{width:100%; border-collapse:collapse; font-size:.93rem; background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+th,td{padding:10px 14px; text-align:right; border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{background:var(--accent-soft); font-weight:600}
+tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+details{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:2px 16px; margin-bottom:10px}
+summary{cursor:pointer; font-weight:600; padding:12px 0}
+details p{color:var(--muted)}
+footer{margin-top:48px; color:var(--muted); font-size:.85rem}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.tab{font-size:.82rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Calculadora de porcentaje de descuento</h1>
+    <p>Calcula el precio final, cuánto ahorras o qué porcentaje te están rebajando. Los resultados aparecen al instante.</p>
+  </header>
+
+  <main>
+    <div class="card" role="region" aria-label="Calculadora de descuento">
+      <div class="tabs" role="tablist" aria-label="Tipo de cálculo">
+        <button class="tab" role="tab" id="t-final" aria-selected="true" data-mode="final">Precio final</button>
+        <button class="tab" role="tab" id="t-pct" aria-selected="false" data-mode="pct">Porcentaje</button>
+        <button class="tab" role="tab" id="t-double" aria-selected="false" data-mode="double">Doble descuento</button>
+      </div>
+
+      <div class="grid" id="fields"></div>
+      <div class="actions">
+        <button class="main" id="calc" type="button">Calcular</button>
+        <button class="ghost" id="reset" type="button">Borrar</button>
+      </div>
+      <p class="error" id="err" role="alert"></p>
+
+      <div class="result" id="result" aria-live="polite">
+        <div class="big" id="big"></div>
+        <dl id="details"></dl>
+      </div>
+    </div>
+
+    <section>
+      <h2>¿Cómo se calcula un descuento?</h2>
+      <p>Un descuento es una reducción expresada como porcentaje del precio original. Para saber cuánto pagarás, primero calculas el ahorro y después lo restas.</p>
+      <div class="formula"><strong>Ahorro</strong> = precio original × porcentaje ÷ 100</div>
+      <div class="formula"><strong>Precio final</strong> = precio original − ahorro</div>
+      <div class="formula"><strong>Porcentaje de descuento</strong> = (precio original − precio final) ÷ precio original × 100</div>
+
+      <h3>Ejemplo práctico</h3>
+      <p>Una chaqueta cuesta 80 € y tiene un 25 % de descuento. El ahorro es 80 × 25 ÷ 100 = 20 €, así que el precio final es 60 €.</p>
+
+      <h3>Descuentos más habituales</h3>
+      <div class="tw">
+      <table>
+        <thead><tr><th>Descuento</th><th>Sobre 50</th><th>Sobre 100</th><th>Sobre 250</th></tr></thead>
+        <tbody>
+          <tr><td>10 %</td><td>45,00</td><td>90,00</td><td>225,00</td></tr>
+          <tr><td>15 %</td><td>42,50</td><td>85,00</td><td>212,50</td></tr>
+          <tr><td>20 %</td><td>40,00</td><td>80,00</td><td>200,00</td></tr>
+          <tr><td>30 %</td><td>35,00</td><td>70,00</td><td>175,00</td></tr>
+          <tr><td>50 %</td><td>25,00</td><td>50,00</td><td>125,00</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dos descuentos seguidos no se suman</h2>
+      <p>Cuando una tienda aplica un 20 % y después otro 20 %, el segundo se calcula sobre el precio ya rebajado. El descuento total es del 36 %, no del 40 %. Usa la pestaña «Doble descuento» para comprobarlo con tus cifras.</p>
+    </section>
+
+    <section>
+      <h2>Preguntas frecuentes</h2>
+      <details>
+        <summary>¿Cómo calculo el porcentaje de descuento rápidamente de cabeza?</summary>
+        <p>Calcula el 10 % moviendo la coma un lugar a la izquierda. A partir de ahí, el 20 % es el doble, el 5 % es la mitad y el 15 % es la suma de ambos.</p>
+      </details>
+      <details>
+        <summary>¿Cómo sé qué porcentaje me han descontado?</summary>
+        <p>Usa la pestaña «Porcentaje»: introduce el precio original y el precio con descuento, y la calculadora te dice el porcentaje y el ahorro.</p>
+      </details>
+      <details>
+        <summary>¿El descuento incluye impuestos como el IVA?</summary>
+        <p>Depende de la tienda. Normalmente el descuento se aplica sobre el precio que ves en la etiqueta. Si el precio ya incluye impuestos, el resultado también los incluye.</p>
+      </details>
+      <details>
+        <summary>¿Puedo usar decimales?</summary>
+        <p>Sí. Puedes escribir cifras como 19,99 o 12,5 usando coma o punto.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>Los cálculos son orientativos. Comprueba siempre el precio final en el comercio.</footer>
+</div>
+
+<script>
+(function(){
+  var modes = {
+    final:{fields:[
+      {id:"price",label:"Precio original",suffix:"€",ph:"100"},
+      {id:"disc",label:"Descuento",suffix:"%",ph:"20"}]},
+    pct:{fields:[
+      {id:"price",label:"Precio original",suffix:"€",ph:"100"},
+      {id:"final",label:"Precio con descuento",suffix:"€",ph:"80"}]},
+    double:{fields:[
+      {id:"price",label:"Precio original",suffix:"€",ph:"100",full:true},
+      {id:"d1",label:"Primer descuento",suffix:"%",ph:"20"},
+      {id:"d2",label:"Segundo descuento",suffix:"%",ph:"10"}]}
+  };
+  var mode="final";
+  var fields=document.getElementById("fields"), err=document.getElementById("err"),
+      result=document.getElementById("result"), big=document.getElementById("big"),
+      details=document.getElementById("details");
+
+  function render(){
+    fields.innerHTML="";
+    modes[mode].fields.forEach(function(f){
+      var w=document.createElement("div"); w.className="field"+(f.full?" full":"");
+      w.innerHTML='<label for="'+f.id+'">'+f.label+'</label><input id="'+f.id+
+        '" type="text" inputmode="decimal" autocomplete="off" placeholder="'+f.ph+
+        '"><span class="suffix">'+f.suffix+'</span>';
+      fields.appendChild(w);
+    });
+    clearOut();
+  }
+  function clearOut(){err.textContent="";result.classList.remove("show")}
+  function num(id){
+    var v=document.getElementById(id).value.trim().replace(/\s/g,"").replace(",",".");
+    if(v==="")return NaN; return Number(v);
+  }
+  function money(n){return n.toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"}
+  function pc(n){return n.toLocaleString("es-ES",{maximumFractionDigits:2})+" %"}
+  function show(label,value,rows){
+    big.innerHTML="<small>"+label+"</small>"+value;
+    details.innerHTML=rows.map(function(r){return"<dt>"+r[0]+"</dt><dd>"+r[1]+"</dd>"}).join("");
+    result.classList.add("show");
+  }
+  function fail(m){err.textContent=m;result.classList.remove("show")}
+
+  function calculate(){
+    err.textContent="";
+    var p=num("price");
+    if(isNaN(p)||p<=0)return fail("Introduce un precio original mayor que 0.");
+    if(mode==="final"){
+      var d=num("disc");
+      if(isNaN(d)||d<0||d>100)return fail("El descuento debe estar entre 0 y 100.");
+      var s=p*d/100;
+      show("Precio final",money(p-s),[["Precio original",money(p)],["Descuento",pc(d)],["Ahorras",money(s)]]);
+    }else if(mode==="pct"){
+      var f=num("final");
+      if(isNaN(f)||f<0)return fail("Introduce un precio con descuento válido.");
+      if(f>p)return fail("El precio con descuento no puede ser mayor que el original.");
+      var sv=p-f;
+      show("Descuento aplicado",pc(sv/p*100),[["Precio original",money(p)],["Precio final",money(f)],["Ahorras",money(sv)]]);
+    }else{
+      var a=num("d1"),b=num("d2");
+      if(isNaN(a)||isNaN(b)||a<0||b<0||a>100||b>100)return fail("Los descuentos deben estar entre 0 y 100.");
+      var fin=p*(1-a/100)*(1-b/100), tot=(1-fin/p)*100;
+      show("Precio final",money(fin),[["Precio original",money(p)],["Descuento total real",pc(tot)],["Ahorras",money(p-fin)]]);
+    }
+  }
+
+  document.getElementById("calc").addEventListener("click",calculate);
+  document.getElementById("reset").addEventListener("click",render);
+  fields.addEventListener("keydown",function(e){if(e.key==="Enter")calculate()});
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      mode=t.dataset.mode;
+      document.querySelectorAll(".tab").forEach(function(x){x.setAttribute("aria-selected",x===t)});
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
